@@ -4,3 +4,6 @@
 .phpunit.result.cache
 composer.lock
 docker-compose.override.yaml
+
+# LLM Assets
+/.claude
