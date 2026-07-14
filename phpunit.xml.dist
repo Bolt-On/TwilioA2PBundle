@@ -13,16 +13,11 @@
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
     </testsuites>
-    <coverage><!-- Newer PHPUnit -->
+    <coverage>
         <include>
             <directory suffix=".php">src/</directory>
         </include>
     </coverage>
-    <filter><!-- Older PHPUnit -->
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src/</directory>
-        </whitelist>
-    </filter>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_DEBUG" value="true"/>
