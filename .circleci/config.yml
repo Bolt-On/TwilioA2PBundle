@@ -1,35 +1,19 @@
 version: 2.1
 
-orbs:
-  jira: circleci/jira@1.3.1
-
 workflows:
   test_all_PHP_and_Laravel_versions:
     jobs:
       - tests:
-          context:
-            - Jira
-          post-steps:
-            - jira/notify
           matrix:
+            # Package only supports Laravel 9 & 10 (PHP 7.4 and Laravel 5.8-8.0 dropped).
             parameters:
-              php: [php-74, php-80, php-81]
-              laravel: ["5.8", "6.0", "7.0", "8.0", "9.0"]
+              php: [php-80, php-81]
+              laravel: ["9.0", "10.0"]
             exclude:
-              - { php: php-80, laravel: "5.8" }
-              - { php: php-81, laravel: "5.8" }
-              - { php: php-81, laravel: "6.0" }
-              - { php: php-81, laravel: "7.0" }
-              - { php: php-74, laravel: "9.0" }
+              # Laravel 10 requires PHP ^8.1; Laravel 9 runs on both 8.0 and 8.1.
+              - { php: php-80, laravel: "10.0" }
 
 executors:
-  php-74:
-    docker:
-      - image: cimg/php:7.4
-      - image: cimg/mysql:5.7
-        environment:
-          MYSQL_DATABASE: forge
-    resource_class: medium+
   php-80:
     docker:
       - image: cimg/php:8.0
@@ -57,17 +41,28 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Snapshot composer.json for cache key
+          command: cp composer.json composer.json.snapshot
+
       - restore_cache:
-          key: v1-dependencies-{{ checksum "composer.json" }}-<< parameters.laravel >>
+          key: v2-dependencies-<< parameters.php >>-<< parameters.laravel >>-{{ checksum "composer.json.snapshot" }}
 
       - run:
           name: Install Composer dependencies
           command: |
-            composer require "illuminate/contracts=^<< parameters.laravel >>" --no-update
+            composer require \
+              "illuminate/bus=^<< parameters.laravel >>" \
+              "illuminate/console=^<< parameters.laravel >>" \
+              "illuminate/contracts=^<< parameters.laravel >>" \
+              "illuminate/database=^<< parameters.laravel >>" \
+              "illuminate/queue=^<< parameters.laravel >>" \
+              "illuminate/support=^<< parameters.laravel >>" \
+              --no-update
             composer update --prefer-dist --no-interaction --no-progress
 
       - save_cache:
-          key: v1-dependencies-{{ checksum "composer.json" }}-<< parameters.laravel >>
+          key: v2-dependencies-<< parameters.php >>-<< parameters.laravel >>-{{ checksum "composer.json.snapshot" }}
           paths:
             - ./vendor
 
