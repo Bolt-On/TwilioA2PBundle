@@ -25,7 +25,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Install latest xDebug
 ARG XDEBUG_VERSION
-RUN pecl install xdebug${XDEBUG_VERSION}
+RUN pecl install xdebug-${XDEBUG_VERSION}
 
 # Clean
 RUN apt-get -y autoremove \

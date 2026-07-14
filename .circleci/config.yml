@@ -41,8 +41,12 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Snapshot composer.json for cache key
+          command: cp composer.json composer.json.snapshot
+
       - restore_cache:
-          key: v1-dependencies-{{ checksum "composer.json" }}-<< parameters.laravel >>
+          key: v2-dependencies-<< parameters.php >>-<< parameters.laravel >>-{{ checksum "composer.json.snapshot" }}
 
       - run:
           name: Install Composer dependencies
@@ -58,7 +62,7 @@ jobs:
             composer update --prefer-dist --no-interaction --no-progress
 
       - save_cache:
-          key: v1-dependencies-{{ checksum "composer.json" }}-<< parameters.laravel >>
+          key: v2-dependencies-<< parameters.php >>-<< parameters.laravel >>-{{ checksum "composer.json.snapshot" }}
           paths:
             - ./vendor
 
