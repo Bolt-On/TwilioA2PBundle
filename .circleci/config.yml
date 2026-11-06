@@ -81,7 +81,12 @@ jobs:
 
       - run:
           name: Install pcov for code coverage
-          command: sudo -E install-php-extensions pcov
+          # cimg/php only scans PHP_CONFIG_FILE_SCAN_DIR (/etc/php.d), where the installer doesn't
+          # write its ini, so enable pcov there explicitly and fail fast if it still isn't loaded.
+          command: |
+            sudo -E install-php-extensions pcov
+            echo "extension=pcov.so" | sudo tee "$(php -r 'echo PHP_CONFIG_FILE_SCAN_DIR;')/pcov.ini"
+            php -m | grep -qi '^pcov$'
 
       - run:
           name: Run PHPUnit tests
