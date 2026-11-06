@@ -70,7 +70,7 @@ class ClientRegistrationHistoryResponseDataTest extends TestCase
         );
     }
 
-    public function arrayDataSetterProvider(): array
+    public static function arrayDataSetterProvider(): array
     {
         return [
             'Entity ID' => ['entity_id', 123, 'getEntityId'],

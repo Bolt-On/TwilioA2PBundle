@@ -71,7 +71,7 @@ class CheckA2PBrandStatusTest extends TestCase
         $this->assertEquals($nonUpdatedHistory, $nonUpdatedHistory->fresh());
     }
 
-    public function allStatusesExceptPendingProvider(): array
+    public static function allStatusesExceptPendingProvider(): array
     {
         return [
             'Compliant' => ['compliant'],

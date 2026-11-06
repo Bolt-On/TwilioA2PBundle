@@ -92,7 +92,7 @@ class ClientDataTest extends TestCase
         );
     }
 
-    public function sanitizedContactPhoneNumbersProvider(): array
+    public static function sanitizedContactPhoneNumbersProvider(): array
     {
         return [
             'International number with some spaces' => ['+1 333888 5555', '+13338885555'],

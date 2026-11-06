@@ -303,7 +303,7 @@ class RegisterClientsTest extends TestCase
             ->with('Testing exception');
     }
 
-    public function clientRegistrationHistoriesWithStatusesProvider(): array
+    public static function clientRegistrationHistoriesWithStatusesProvider(): array
     {
         return [
             'Draft' => ['draft', false],

@@ -84,7 +84,7 @@ class CheckBrandStatusTest extends TestCase
         $spy->shouldNotHaveReceived('checkBrandRegistrationStatus');
     }
 
-    public function allHistoryRequestTypesExceptCreateBrandProvider(): array
+    public static function allHistoryRequestTypesExceptCreateBrandProvider(): array
     {
         return [
             'No history' => [null, null],
