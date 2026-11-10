@@ -702,7 +702,7 @@ class ProcessEntityTest extends TestCase
         return $requiredHistory;
     }
 
-    public function createSmsCampaignAllowedStatusesProvider(): array
+    public static function createSmsCampaignAllowedStatusesProvider(): array
     {
         return [
             'Add Phone Number to Messaging Service' => [
@@ -712,7 +712,7 @@ class ProcessEntityTest extends TestCase
         ];
     }
 
-    public function clientRegistrationHistoriesNotAllowedStatusesProvider(): array
+    public static function clientRegistrationHistoriesNotAllowedStatusesProvider(): array
     {
         return collect(Status::getConstants())
             ->diff(ClientRegistrationHistory::ALLOWED_STATUSES_TYPES)

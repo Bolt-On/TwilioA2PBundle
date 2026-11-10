@@ -93,7 +93,7 @@ class ClientRegistrationHistoryTest extends TestCase
         $this->assertNull($latestBundleSid, 'Bundle Sid found when it should not');
     }
 
-    public function allowedStatusesProvider(): array
+    public static function allowedStatusesProvider(): array
     {
         return [
             'Bundle Draft' => [Status::BUNDLES_DRAFT],

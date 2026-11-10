@@ -7,8 +7,8 @@ services:
             args:
                 WWWUSER: ${WWWUSER:-1000}
                 WWWGROUP: ${WWWGROUP:-1000}
-                PHP_VERSION: ${PHP_VERSION:-8.1}
-                XDEBUG_VERSION: ${XDEBUG_VERSION:-3.1.6}
+                PHP_VERSION: ${PHP_VERSION:-8.2}
+                XDEBUG_VERSION: ${XDEBUG_VERSION:-3.3.2}
         working_dir: /var/www/html
         volumes:
             - ${WORKING_DIR:-./}:/var/www/html
@@ -16,6 +16,11 @@ services:
             - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
         environment:
             PHP_IDE_CONFIG: "serverName=localhost"
+            # Composer >=2.9 blocks every Laravel 10/11 release on security advisories; matches CI.
+            # Only affects this package's dev container, not consuming apps.
+            # TODO: On each Laravel upgrade, try removing this (here and in .circleci/config.yml).
+            #       If `composer update` succeeds without it for every Laravel version in the range, delete it.
+            COMPOSER_NO_BLOCKING: "1"
         depends_on:
             - mysql
 
